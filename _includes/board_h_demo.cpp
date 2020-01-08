@@ -43,9 +43,8 @@ int main(){
 	cout<<(myboard.eat(0,2,2,1)?"valid":"invalid!")<<endl;
 
 	/*
-	 * putchess函数
-	 * 下一个子，参数为
-	 * 会自动翻
+	 * putchess函数(用来下一个棋，下完后会自动翻转能吃掉的子)
+	 * 参数为
 	 * 坐标及身份(1或者-1)
 	 * 失败返回0
 	 * 成功返回1
@@ -60,14 +59,14 @@ int main(){
 	/*
 	 * assess函数
 	 * 对于某一方，棋盘的估价
-	 * 比如对黑方越有利则估价越高，就是
+	 * 比如对黑方越有利则估价越高，参数就是1
 	 */
 	cout<<"value to black: "<<myboard.assess(1)<<endl;
 
 
 	/*
 	 * 支持导入棋局
-	 * 不要尝试在结构体外头循环赋值导入board数组！
+	 * 不要尝试在结构体外头自己写循环赋值导入board数组！
 	 */
 	myboard=Reversi_Board(arr);
 
