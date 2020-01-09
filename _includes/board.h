@@ -251,6 +251,7 @@ struct Reversi_Board{
 	 */
 	bool putchess(int x,int y,int cur){
 		if(!inboard(x,y) || board[x][y])return 0;
+		step++;
 		board[x][y]=cur;
 		eat(1,x,y,cur);
 		return 1;

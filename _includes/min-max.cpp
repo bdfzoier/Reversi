@@ -29,14 +29,14 @@
 using namespace std;
 int arr[10][10]={
 	{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-	{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-	{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-	{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-	{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-	{ 0, 0, 0, 0, 0, 1,-1, 0, 0, 0},
-	{ 0, 0, 0, 0, 0,-1,-1,-1, 0, 0},
-	{ 0, 0, 0, 0, 0, 0,-1, 1, 0, 0},
-	{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+	{ 0,-1,-1,-1,-1, 1,-1, 0, 0, 0},
+	{ 0,-1,-1,-1,-1,-1,-1,-1, 1, 0},
+	{ 0,-1,-1,-1,-1, 1,-1, 1, 1, 0},
+	{ 0,-1,-1,-1,-1,-1, 1, 1, 1, 0},
+	{ 0,-1,-1,-1,-1,-1, 1, 1, 1, 0},
+	{ 0,-1,-1,-1,-1,-1, 1, 1, 1, 0},
+	{ 0, 0, 0, 1,-1,-1, 1, 0, 1, 0},
+	{ 0, 0, 1, 1, 1, 1, 1, 0, 0, 0},
 	{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 };
 pair<pair<int, int>, double> min_max(Reversi_Board nowBoard, int depth, bool isMax, double alpha, double beta){ //返回一个坐标 和 最大/最小权值
@@ -74,7 +74,7 @@ pair<pair<int, int>, double> min_max(Reversi_Board nowBoard, int depth, bool isM
 }
 int main(){
 	Reversi_Board myBoard = Reversi_Board(arr);
-	myBoard.prt();
+	myBoard.raw_prt();
 	pair<pair<int, int>, double> rslt = min_max(myBoard, 5, 1, -1e9, 1e9);
 	printf("%d %d %f\n", rslt.first.first, rslt.first.second, rslt.second);
 	return 0;
