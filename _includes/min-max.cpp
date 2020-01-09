@@ -16,7 +16,7 @@ int arr[10][10]={
 	{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 	{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 };
-pair<pair<int, int>, double> min_max(Reversi_Board nowBoard, int depth, bool isMax, int alpha, int beta){ //返回一个坐标 和 最大/最小权值
+pair<pair<int, int>, double> min_max(Reversi_Board nowBoard, int depth, bool isMax, double alpha, double beta){ //返回一个坐标 和 最大/最小权值
 	if (depth <= 0){
 		return make_pair(make_pair(-1, -1), nowBoard.assess(1));
 	}
