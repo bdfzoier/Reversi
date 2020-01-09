@@ -55,6 +55,9 @@ int main(){
 	//输出棋盘
 	myboard.prt();
 
+	//没有图形的输出
+	myboard.raw_prt();
+
 
 	/*
 	 * assess函数

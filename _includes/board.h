@@ -111,6 +111,19 @@ struct Reversi_Board{
 		}
 		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
 	}
+	void raw_prt(){
+		puts("+----------------+");
+		for(int i=1;i<=SIZE;i++){
+			putchar('|');
+			for(int j=1;j<=SIZE;j++){
+				putchar(' ');
+				putchar(board[i][j]?(board[i][j]==1?'#':'o'):' ');
+			}
+			putchar('|');
+			putchar('\n');
+		}
+		puts("+----------------+");
+	}
 	
 
 	//Calculation
