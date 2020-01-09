@@ -1,6 +1,8 @@
 # Reversi
 基于minmax搜索实现的黑白棋AI
 
+内置MinG-W C++在Windows下编写的黑白棋游戏
+
 ## 目录结构
 ```
 Reversi/
@@ -13,7 +15,7 @@ Reversi/
   |       |
   |       +---board_h_demo.cpp
   |       |
-  |       +---min-max.cpp
+  |       +---min-max.cpp (deleted currently)
   |       |
   |       +---terrain_value.txt
   |
