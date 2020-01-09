@@ -13,6 +13,8 @@ Reversi/
   |       |
   |       +---board_h_demo.cpp
   |       |
+  |       +---min-max.cpp
+  |       |
   |       +---terrain_value.txt
   |
   |
