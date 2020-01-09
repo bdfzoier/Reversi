@@ -45,7 +45,7 @@ pair<pair<int, int>, double> min_max(Reversi_Board nowBoard, int depth, bool isM
 	}
 	int winn = nowBoard.win();
 	if (winn != -2){
-		return winn * 1e9;
+		return make_pair(make_pair(0, 0), winn * 1e9);
 	}
 	int cur = isMax ? 1: -1;
 	double fnlWght = isMax ? -1e9 : 1e9;
