@@ -23,3 +23,6 @@ Reversi/
 
 ## ReversiGame.cpp截图
 ![](https://i.loli.net/2020/01/09/elHK2zmAindw3ZX.jpg)
+
+
+P.S. Guoyh写的是Bug，不是代码
