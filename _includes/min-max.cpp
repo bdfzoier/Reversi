@@ -17,8 +17,12 @@ int arr[10][10]={
 	{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 };
 pair<pair<int, int>, double> min_max(Reversi_Board nowBoard, int depth, bool isMax, double alpha, double beta){ //返回一个坐标 和 最大/最小权值
-	if (depth <= 0){
+	if (depth == 0){
 		return make_pair(make_pair(-1, -1), nowBoard.assess(1));
+	}
+	int winn = nowBoard.win();
+	if (winn != -2){
+		return winn * 1e9;
 	}
 	int cur = isMax ? 1: -1;
 	double fnlWght = isMax ? -1e9 : 1e9;
@@ -46,7 +50,6 @@ pair<pair<int, int>, double> min_max(Reversi_Board nowBoard, int depth, bool isM
 	return make_pair(fnlChs, fnlWght);
 }
 int main(){
-	freopen("1.out", "w", stdout);
 	Reversi_Board myBoard = Reversi_Board(arr);
 	myBoard.prt();
 	pair<pair<int, int>, double> rslt = min_max(myBoard, 5, 1, -1e9, 1e9);
