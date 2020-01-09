@@ -15,8 +15,8 @@
            | \_|  ''\---/''  |   |
            \  .-\__  `-`  ___/-. /
          ___`. .'  /--.--\  `. . __
-      ."" '<  `.___\_<|>_/___.'  >'"".
-     | | :  `- \`.;`\ _ /`;.`/ - ` : | |
+      ."" '<  `.___\_<|>_/___.'  >' "".
+     | | :  `- \`.;`\ _ /`;.`/ - `  : | |
      \  \ `-.   \_ __\ /__ _/   .-` /  /
 ======`-.____`-.___\_____/___.-`____.-'======
                    `=---='
@@ -26,6 +26,7 @@
 
 #include<iostream>
 #include<cstdio>
+#include<windows.h>
 #include<cstring>
 
 #define SIZE 8
@@ -69,19 +70,48 @@ struct Reversi_Board{
 			}
 	}
 	void prt(){
-		puts("+----------------+");
+		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 96);
+		std :: cout << "    A   B   C   D   E   F   G   H   ";
+		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
+		std :: cout << std :: endl;
+		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 96);
+		std :: cout << "  ┌───┬───┬───┬───┬───┬───┬───┬───┐ ";
+		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
+		std :: cout << std :: endl;
 		for(int i=1;i<=SIZE;i++){
-			putchar('|');
+			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 96);
+			std :: cout << ' ' << i;
 			for(int j=1;j<=SIZE;j++){
-				putchar(' ');
-				putchar(board[i][j]?(board[i][j]==1?'#':'o'):' ');
+				std :: cout << "│ ";
+				if(board[i][j] == 0) {
+					std :: cout << "  ";
+				} else if(board[i][j] == 1) {
+					std :: cout << "■";
+				} else {
+					SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 111);
+					std :: cout << "■";
+					SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 96);
+				}
 			}
-			putchar('|');
-			putchar('\n');
+			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 96);
+			std :: cout << "│ ";
+			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
+			std :: cout << "\n";
+			if(i != SIZE) {
+				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 96);
+				std :: cout << "  ├───┼───┼───┼───┼───┼───┼───┼───┤ ";
+				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
+				std :: cout << "\n";
+			} else {
+				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 96);
+				std :: cout << "  └───┴───┴───┴───┴───┴───┴───┴───┘ " << std :: endl;
+				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
+				std :: cout << "\n";
+			}
 		}
-		puts("+----------------+");
+		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
 	}
-
+	
 
 	//Calculation
 

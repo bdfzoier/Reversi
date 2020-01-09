@@ -7,6 +7,8 @@ Reversi/
   |
   +---_includes/
   |       |
+  |       +---ReversiGame.cpp
+  |       |
   |       +---board.h
   |       |
   |       +---board_h_demo.cpp
@@ -16,3 +18,6 @@ Reversi/
   |
   +---资料.md
 ```
+
+## ReversiGame.cpp截图
+![](https://i.loli.net/2020/01/09/elHK2zmAindw3ZX.jpg)
