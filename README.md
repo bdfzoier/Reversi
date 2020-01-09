@@ -7,6 +7,8 @@ Reversi/
   |
   +---_includes/
   |       |
+  |       +---ReversiGame.cpp
+  |       |
   |       +---board.h
   |       |
   |       +---board_h_demo.cpp
