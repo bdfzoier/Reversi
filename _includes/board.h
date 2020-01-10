@@ -28,10 +28,12 @@
 #include<cstdio>
 #include<windows.h>
 #include<cstring>
+#include<ctime>
 
 #define SIZE 8
 #define NR 10
 const int nxgo[8][2]={{-1,1},{-1,0},{-1,-1},{0,1},{0,-1},{1,1},{1,0},{1,-1}};
+double train_speed=1;
 const int terrain[10][10]={
 	{  0,   0,   0,  0,  0,  0,  0,   0,   0},
 	{  0, 100, -50, 20, 10, 10, 20, -50, 100},
@@ -44,6 +46,69 @@ const int terrain[10][10]={
 	{  0, 100, -50, 20, 10, 10, 20, -50, 100},
 	{  0,   0,   0,  0,  0,  0,  0,   0,   0}
 };
+const double trained[60][3]={
+	{100.000000,100.000000,100.000000},
+	{100.361768,100.000000,100.180884},
+	{99.584864,99.867397,100.000000},
+	{100.052040,99.813727,100.123644},
+	{100.508281,99.990285,100.000114},
+	{99.980930,99.837283,99.834116},
+	{100.392281,99.991115,100.025741},
+	{101.700082,100.014420,100.237165},
+	{100.319654,100.195803,100.046840},
+	{98.551383,99.879870,100.250361},
+	{99.056466,100.658859,100.945670},
+	{96.171441,100.636101,100.093181},
+	{84.689848,100.251655,100.043888},
+	{93.722519,100.032442,100.025845},
+	{74.551304,100.306106,99.175692},
+	{79.050164,100.089955,100.377848},
+	{65.501229,98.998674,99.914575},
+	{61.750032,98.855593,101.484934},
+	{82.364053,100.248548,100.418696},
+	{84.644159,100.114286,100.373809},
+	{92.271047,98.723173,100.251926},
+	{91.356030,99.206406,100.281395},
+	{93.946307,98.843857,100.304727},
+	{88.638031,98.631199,100.405774},
+	{89.239438,97.776317,100.626685},
+	{90.279200,99.373917,101.318744},
+	{75.154937,98.854079,100.724124},
+	{88.095642,99.578796,100.951991},
+	{59.871079,99.490190,99.888563},
+	{86.556520,101.446131,103.139242},
+	{61.036956,98.932327,98.550705},
+	{91.364970,99.735812,99.725901},
+	{69.717369,99.801442,100.536428},
+	{92.720623,101.302991,99.832103},
+	{70.018037,100.269868,99.760472},
+	{73.636113,99.308187,99.908963},
+	{66.383039,100.529246,100.029636},
+	{75.789401,100.079043,98.827350},
+	{79.383997,100.277526,98.765728},
+	{87.237933,100.803887,100.558349},
+	{93.098684,98.368412,101.996210},
+	{87.053517,99.893426,101.401589},
+	{95.069497,100.212388,101.089259},
+	{75.506549,100.996672,98.794895},
+	{102.271143,99.739296,99.760543},
+	{30.164496,100.558540,100.759110},
+	{110.221976,99.724882,100.420185},
+	{-6.572154,101.048376,99.236292},
+	{68.025292,99.406431,98.780108},
+	{30.467266,103.413578,106.310126},
+	{-32.713665,99.614116,97.440799},
+	{-9.095210,108.138533,95.376254},
+	{-236.204362,103.873654,96.617861},
+	{-421.479201,105.974136,95.041996},
+	{-634.374948,110.186536,123.848831},
+	{-534.744391,115.026140,241.512005},
+	{-651.583349,97.423774,133.513773},
+	{448.755769,119.649926,50.595185},
+	{142.247264,115.653295,106.607771},
+	{111.284104,117.282423,86.280741},
+};
+
 
 struct Reversi_Board{
 	/*
@@ -53,13 +118,18 @@ struct Reversi_Board{
 	 */
 	int board[NR][NR],step;
 	inline bool inboard(int x,int y){return (x>0 && x<=SIZE && y>0 && y<=SIZE);}
+	double w[64][3];
 
 	//init & print
 	Reversi_Board(){
+		for(int i=0;i<60;i++)
+			for(int j=0;j<3;j++)
+				w[i][0]=trained[i][j];
 		step=0;
 		memset(board,0,sizeof(board));
 		board[4][4]=board[5][5]=-1;
 		board[4][5]=board[5][4]=1;
+		srand(time(NULL));
 	}
 	Reversi_Board(int arr[NR][NR]){
 		step=-4;
@@ -68,6 +138,12 @@ struct Reversi_Board{
 				board[i][j]=arr[i][j];
 				if(arr[i][j])step++;
 			}
+	}
+	void init(){
+		step=0;
+		memset(board,0,sizeof(board));
+		board[4][4]=board[5][5]=-1;
+		board[4][5]=board[5][4]=1;
 	}
 	void prt(){
 		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 96);
@@ -112,8 +188,11 @@ struct Reversi_Board{
 		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
 	}
 	void raw_prt(){
-		puts("+----------------+");
+		puts("    A B C D E F G H");
+		puts("  +----------------+");
 		for(int i=1;i<=SIZE;i++){
+			putchar('0'+i);
+			putchar(' ');
 			putchar('|');
 			for(int j=1;j<=SIZE;j++){
 				putchar(' ');
@@ -122,7 +201,7 @@ struct Reversi_Board{
 			putchar('|');
 			putchar('\n');
 		}
-		puts("+----------------+");
+		puts("  +----------------+");
 	}
 	
 
@@ -142,7 +221,7 @@ struct Reversi_Board{
 				if(board[i][j]==1)black++;
 				else if(board[i][j]==-1)white++;
 			}
-		if(step==60){
+		if(step==60 || (!choice(1) && !choice(-1))){
 			if(black>white)return 1;
 			else if(white>black)return -1;
 			else return 0;
@@ -192,7 +271,7 @@ struct Reversi_Board{
 		int cnt=0;
 		for(int i=1;i<=SIZE;i++)
 			for(int j=1;j<=SIZE;j++)
-				if(eat(0,i,j,cur))cnt++;
+				if(board[i][j]==0 && eat(0,i,j,cur))cnt++;
 		return cnt;
 	}
 	//计算稳定子
@@ -231,13 +310,18 @@ struct Reversi_Board{
 	double assess(int cur){
 		int iswin=win();
 		if(iswin!=-2){
-			if(iswin==cur)return 1000000;
-			else if(iswin==-cur)return -1000000;
+			if(iswin==cur)return 100000;
+			else if(iswin==-cur)return -100000;
 			else return 0;
 		}
-		return 10*(terr(cur)-terr(-cur))+
-			100*(choice(cur)-choice(-cur))+
-			50*(not_threated(cur)-not_threated(-cur));
+		return w[step][0]*(terr(cur)-terr(-cur))+
+			w[step][1]*(choice(cur)-choice(-cur))+
+			w[step][2]*(not_threated(cur)-not_threated(-cur));
+	}
+	void train(double o,double t,int cur){
+		w[step][0]+=train_speed*(terr(cur)-terr(-cur))*(t-o);
+		w[step][1]+=train_speed*(choice(cur)-choice(-cur))*(t-o);
+		w[step][2]+=train_speed*(not_threated(cur)-not_threated(-cur))*(t-o);
 	}
 
 
@@ -255,6 +339,21 @@ struct Reversi_Board{
 		board[x][y]=cur;
 		eat(1,x,y,cur);
 		return 1;
+	}
+	void rand_putchess(int cur){
+		int curchoice=choice(cur);
+		if(!curchoice)return;
+		int choice_num=rand()%curchoice,cnt=0;
+		for(int i=1;i<=SIZE;i++)
+			for(int j=1;j<=SIZE;j++){
+				if(board[i][j]==0 && eat(0,i,j,cur)){
+					if(cnt==choice_num){
+						putchess(i,j,cur);
+						return;
+					}
+					cnt++;
+				}
+			}
 	}
 
 };

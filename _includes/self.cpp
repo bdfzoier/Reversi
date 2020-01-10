@@ -40,23 +40,18 @@ pair<pair<int, int>, double> min_max(Reversi_Board nowBoard, int depth, bool isM
 }
 int main(){
 	Reversi_Board myboard;
-	for(int i=1;i<=10000;i++){
-		if(i%10==0)printf("%d\n",i);
-		train_speed=(double)1/((double)10000*i*i);
-		//printf("%lf\n",train_speed);
-		int cur=1;
-		myboard.init();
-		while(myboard.win()==-2){
-			double nxpoint=min_max(myboard,2,(cur+1)>>1,-1e9,1e9).second;
-			double curpoint=myboard.assess(1);
-			myboard.train(curpoint,nxpoint,1);
-
-			//myboard.raw_prt();
-			myboard.rand_putchess(cur);
-			cur=-cur;
-		}
+	int cur=1;
+	while(myboard.win()==-2){
+		myboard.raw_prt();
+		getchar();
+		pair<pair<int,int>,double> res=min_max(myboard,5,(cur+1)>>1,-1e9,1e9);
+		myboard.putchess(res.first.first,res.first.second,cur);
+		cout<<cur<<endl;
+		cout<<res.second<<endl;
+		cout<<myboard.step<<endl;
+		cur=-cur;
 	}
-	for(int i=0;i<60;i++)
-		printf("%f %f %f\n",myboard.w[i][0],myboard.w[i][1],myboard.w[i][2]);
+	if(myboard.win())printf("%d wins!!!",myboard.win());
+	else printf("Draw");
 	return 0;
 }
