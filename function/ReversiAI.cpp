@@ -10,19 +10,19 @@ int main(){
 	int cur=int(first=='y')*2-1;
 	while(myboard.win()==-2){
 		myboard.raw_prt();
-		if(cur==1){
+		if(cur==1 && myboard.choice(first=='y'?1:-1)){
 			char s[3];
 			scanf("%s",s);
 			int y=s[0]-'A'+1,x=s[1]-'0';
-			while(myboard.board[x][y] || !myboard.eat(0,x,y,1)){
+			while(myboard.board[x][y] || !myboard.eat(0,x,y,first=='y'?1:-1)){
 				printf("Invalid!! Please enter again\n");
 				scanf("%s",s);
 				y=s[0]-'A'+1,x=s[1]-'0';
 			}
-			myboard.putchess(x,y,1);
+			myboard.putchess(x,y,first=='y'?1:-1);
 		}
 		else
-			myboard.auto_putchess(-1);
+			myboard.auto_putchess(first=='y'?-1:1);
 		system("clear");
 		cur=-cur;
 	}
