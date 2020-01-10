@@ -1,6 +1,6 @@
 #include<iostream>
 #include<cstdio>
-#include"board.h"
+#include "./includes/board.h"
 using namespace std;
 char first;
 int main(){
