@@ -2,7 +2,7 @@
 基于minmax搜索实现的黑白棋AI，支持linux，windows下编译运行
 
 ## 战斗力
-打赢了目前找到的所有ai（共5个），具体[战况](https://github.com/bdfzoier/Reversi/blob/master/战况.md)
+打赢了目前找到的所有AI（共6个），具体[战况](https://github.com/bdfzoier/Reversi/blob/master/战况.md)
 
 ## 如何使用
 
