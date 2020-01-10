@@ -1,7 +1,19 @@
 # Reversi
-基于minmax搜索实现的黑白棋AI
+基于minmax搜索实现的黑白棋AI，支持linux，windows下编译运行
 
-内置MinG-W C++在Windows下编写的黑白棋游戏
+## 战斗力
+打赢了目前找到的所有ai（共六个），具体[战况](https://github.com/bdfzoier/Reversi/blob/master/战况.md)
+
+对战学过一点的人类胜率不高
+
+## 如何使用
+
+```
+$ git clone https://github.com/bdfzoier/Reversi.git
+$ cd Reversi/
+$ g++ reversi_ai.cpp -o reversi_ai -Wall
+$ ./reversi_ai
+```
 
 
 ## ReversiGame.cpp截图
