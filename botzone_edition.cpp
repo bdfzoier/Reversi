@@ -1,5 +1,3 @@
-#ifndef BOARD_H
-#define BOARD_H
 
 /*
                    _ooOoo_
@@ -26,7 +24,6 @@
 
 #include<iostream>
 #include<cstdio>
-#include<windows.h>
 #include<cstring>
 #include<ctime>
 
@@ -145,48 +142,7 @@ struct Reversi_Board{
 		board[4][4]=board[5][5]=-1;
 		board[4][5]=board[5][4]=1;
 	}
-	void prt(){
-		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 96);
-		std :: cout << "    A   B   C   D   E   F   G   H   ";
-		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
-		std :: cout << std :: endl;
-		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 96);
-		std :: cout << "  ┌───┬───┬───┬───┬───┬───┬───┬───┐ ";
-		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
-		std :: cout << std :: endl;
-		for(int i=1;i<=SIZE;i++){
-			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 96);
-			std :: cout << ' ' << i;
-			for(int j=1;j<=SIZE;j++){
-				std :: cout << "│ ";
-				if(board[i][j] == 0) {
-					std :: cout << "  ";
-				} else if(board[i][j] == 1) {
-					std :: cout << "■ ";
-				} else {
-					SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 111);
-					std :: cout << "■ ";
-					SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 96);
-				}
-			}
-			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 96);
-			std :: cout << "│ ";
-			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
-			std :: cout << "\n";
-			if(i != SIZE) {
-				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 96);
-				std :: cout << "  ├───┼───┼───┼───┼───┼───┼───┼───┤ ";
-				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
-				std :: cout << "\n";
-			} else {
-				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 96);
-				std :: cout << "  └───┴───┴───┴───┴───┴───┴───┴───┘ " << std :: endl;
-				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
-				std :: cout << "\n";
-			}
-		}
-		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
-	}
+
 	void raw_prt(){
 		puts("    A B C D E F G H");
 		puts("  +----------------+");
@@ -392,12 +348,73 @@ struct Reversi_Board{
 		return std::make_pair(fnlChs, fnlWght);
 	}
 	void auto_putchess(int cur){
-		std::pair<int, int> pr = min_max(*this, 6, (cur + 1) >> 1, -1e9, 1e9).first;
+		std::pair<int, int> pr = min_max(*this, 5, (cur + 1) >> 1, -1e9, 1e9).first;
 		putchess(pr.first, pr.second, cur);
 	}
 };
 
 #undef SIZE
 #undef NR
+std::pair<std::pair<int, int>, double> min_max(Reversi_Board nowBoard, int depth, bool isMax, double alpha, double beta){ //返回一个坐标 和 最大/最小权值
+	bool flag = false;
+	if (depth == 0){
+		return std::make_pair(std::make_pair(-1, -1), nowBoard.assess(1));
+	}
+	int winn = nowBoard.win();
+	if (winn != -2){
+		return std::make_pair(std::make_pair(0, 0), winn * 100000);
+	}
+	int cur = isMax ? 1: -1;
+	double fnlWght = isMax ? -1e9 : 1e9;
+	std::pair <int, int> fnlChs = std::make_pair(-1, -1);
+	for (int i = 1; i <= 8; i++){
+		for (int j = 1; j <= 8; j++){
+			if (nowBoard.eat(0, i, j, cur) && nowBoard.board[i][j] == 0){
+				flag = true;
+				Reversi_Board nxtBoard = nowBoard;
+				nxtBoard.putchess(i, j, cur);
+				double weight = min_max(nxtBoard, depth - 1, !isMax, alpha, beta).second;
+				if (isMax && weight > fnlWght){
+					fnlChs = std::make_pair(i, j);
+					fnlWght = weight;
+					alpha = weight;
+				}
+				if (!isMax && weight < fnlWght){
+					fnlChs = std::make_pair(i, j);
+					fnlWght = weight;
+					beta = weight;
+				}
+				if (beta <= alpha) break;
+			}
+		}
+	}
+	if (!flag) return std::make_pair(std::make_pair(-1, -1), min_max(nowBoard, depth - 1, !isMax, alpha, beta).second);
+	return std::make_pair(fnlChs, fnlWght);
+}
 
-#endif
+int n;
+int tx,ty;
+int cur=1;
+Reversi_Board myboard;
+int main(){
+	scanf("%d",&n);n*=2,n--;
+	scanf("%d%d",&ty,&tx);
+	if(tx!=-1 && ty!=-1){
+		ty++,tx++;
+		myboard.putchess(tx,ty,1);
+		cur=-cur;
+	}
+
+	for(int i=2;i<=n;i++){
+		scanf("%d%d",&ty,&tx);
+		ty++,tx++;
+		myboard.putchess(tx,ty,cur);
+		cur=-cur;
+	}
+	//std::cout<<cur;
+	std::pair<int, int> pr = min_max(myboard, 5, (cur + 1) >> 1, -1e9, 1e9).first;
+	if(!myboard.inboard(pr.first,pr.second) || myboard.board[pr.first][pr.second] || !myboard.eat(0,pr.first,pr.second,cur))printf("-1 -1\n");
+	else printf("%d %d\n",pr.second-1,pr.first-1);
+	
+	return 0;
+}
