@@ -108,6 +108,7 @@ const double trained[60][3]={
 	{-64.296694,1991.193973,4515.801265},
 	{175.707687,1781.059049,4291.633730}
 };
+double w1=191.727187,w2=104.604102,w3=115.982689;
 
 
 struct Reversi_Board{
@@ -314,6 +315,9 @@ struct Reversi_Board{
 			else if(iswin==-cur)return -100000;
 			else return 0;
 		}
+		/*return w1*(terr(cur)-terr(-cur))+
+			w2*(choice(cur)-choice(-cur))+
+			w3*(not_threated(cur)-not_threated(-cur));*/
 		return w[step][0]*(terr(cur)-terr(-cur))+
 			w[step][1]*(choice(cur)-choice(-cur))+
 			w[step][2]*(not_threated(cur)-not_threated(-cur));
@@ -322,6 +326,9 @@ struct Reversi_Board{
 		w[step][0]+=train_speed*(terr(cur)-terr(-cur))*(t-o);
 		w[step][1]+=train_speed*(choice(cur)-choice(-cur))*(t-o);
 		w[step][2]+=train_speed*(not_threated(cur)-not_threated(-cur))*(t-o);
+		//w1+=train_speed*(terr(cur)-terr(-cur))*(t-o);
+		//w2+=train_speed*(choice(cur)-choice(-cur))*(t-o);
+		//w3+=train_speed*(not_threated(cur)-not_threated(-cur))*(t-o);
 	}
 
 
