@@ -240,7 +240,7 @@ struct Reversi_Board{
 	 * cur 表示当前是哪方
 	 * 返回值表示能反转多少个
 	 */
-	int eat(bool flip,int x,int y,int cur){
+	inline int eat(bool flip,int x,int y,int cur){
 		int cnt=0;
 		for(int pos=0;pos<8;pos++){
 			int tx=x+nxgo[pos][0],ty=y+nxgo[pos][1],tcnt=0;
@@ -257,10 +257,9 @@ struct Reversi_Board{
 				}
 			}
 		}
-		cnt+=flip;
 		return cnt;
 	}
-	int terr(int cur){
+	inline int terr(int cur){
 		int cnt=0;
 		for(int i=1;i<=SIZE;i++)
 			for(int j=1;j<=SIZE;j++)
@@ -268,7 +267,7 @@ struct Reversi_Board{
 		return cnt;
 	}
 	//返回cur可以下棋的地方个数
-	int choice(int cur){
+	inline int choice(int cur){
 		int cnt=0;
 		for(int i=1;i<=SIZE;i++)
 			for(int j=1;j<=SIZE;j++)
@@ -276,7 +275,7 @@ struct Reversi_Board{
 		return cnt;
 	}
 	//计算稳定子
-	int not_threated(int cur){
+	inline int not_threated(int cur){
 		cur=-cur;
 		bool threat[NR][NR];
 		memset(threat,0,sizeof(threat));
@@ -308,7 +307,7 @@ struct Reversi_Board{
 	/*
 	 * 对于cur，棋局状态如何
 	 */
-	double assess(int cur){
+	inline double assess(int cur){
 		int iswin=win();
 		if(iswin!=-2){
 			if(iswin==cur)return 100000;
@@ -340,7 +339,7 @@ struct Reversi_Board{
 	 * 坐标及身份
 	 * 失败返回0
 	 */
-	bool putchess(int x,int y,int cur){
+	inline bool putchess(int x,int y,int cur){
 		if(!inboard(x,y) || board[x][y])return 0;
 		step++;
 		board[x][y]=cur;
