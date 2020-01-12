@@ -1,6 +1,7 @@
 # include <iostream>
 # include <cstdio>
-# include "./includes/board.h" 
+//# include "./includes/board.h" 
+# include "./includes/board_hash.h" 
 
 using namespace std;
 
