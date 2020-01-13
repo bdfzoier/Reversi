@@ -50,8 +50,11 @@ const int terrain[10][10]={
 	{  0, 100, -50, 20, 10, 10, 20, -50, 100},
 	{  0,   0,   0,  0,  0,  0,  0,   0,   0}
 };
-bool cmp(std::pair<int, double> x, std::pair<int, double> y){
+bool cmp1(std::pair<int, double> x, std::pair<int, double> y){
 	return x.second > y.second;
+}
+bool cmp2(std::pair<int, double> x, std::pair<int, double> y){
+	return x.second < y.second;
 }
 const int board_hash[10][10]={
 	{0,0,0,0,0,0,0,0,0,0},
@@ -432,7 +435,7 @@ struct Reversi_Board{
 					nxtBoard.putchess(i, j, cur);
 					pr2[cnt] = std::make_pair(cnt, nxtBoard.assess(cur));
 				}
-		sort(pr2 + 1, pr2 + cnt + 1, cmp);
+		sort(pr2 + 1, pr2 + cnt + 1, isMax ? cmp1 : cmp2);
 		for (int i = 1; i <= std::min(cnt, MAX_SEARCH); i++){
 			int id = pr2[i].first;
 			int nx = pr[id].first;
