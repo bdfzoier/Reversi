@@ -26,7 +26,9 @@
 
 #include<iostream>
 #include<cstdio>
+#ifndef linux
 #include<windows.h>
+#endif
 #include<cstring>
 #include<unordered_map>
 #include<ctime>
@@ -174,6 +176,8 @@ struct Reversi_Board{
 		hash1^=board_hash[4][5];
 		hash1^=board_hash[5][4];
 	}
+
+#ifndef linux
 	void prt(){
 		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 96);
 		std :: cout << "    A   B   C   D   E   F   G   H   ";
@@ -216,6 +220,7 @@ struct Reversi_Board{
 		}
 		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
 	}
+#endif
 	void raw_prt(){
 		puts("    A B C D E F G H");
 		puts("  +----------------+");
@@ -457,7 +462,7 @@ struct Reversi_Board{
 		return std::make_pair(fnlChs, fnlWght);	
 	}
 	std::pair<int, int> auto_putchess(int cur){
-		std::pair<int, int> pr = min_max(*this, 7, (cur + 1) >> 1, -1e9, 1e9).first;
+		std::pair<int, int> pr = min_max(*this, 8, (cur + 1) >> 1, -1e9, 1e9).first;
 		putchess(pr.first, pr.second, cur);
 		return pr;
 	}

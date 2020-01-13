@@ -20,11 +20,17 @@ void cl() {
 }
 
 void pr() {
+
+#ifdef linux
+	myboard.raw_prt();
+#endif
+#ifndef linux
 	if(hq == 'n') {
 		myboard.raw_prt();
 	} else {
 		myboard.prt();
 	}
+#endif
 }
 
 int main(){
@@ -64,6 +70,7 @@ int main(){
 		cl();
 		cur = -cur;
 	}
-	printf("%d wins", myboard.win());
+	if(myboard.win())printf(myboard.win()==1?"black wins":"white wins");
+	else printf("draw");
 	return 0;
 }
