@@ -1,4 +1,3 @@
-
 /*
                    _ooOoo_
                   o8888888o
@@ -412,7 +411,7 @@ struct Reversi_Board{
 		return std::make_pair(fnlChs, fnlWght);	
 	}
 	std::pair<int, int> auto_putchess(int cur){
-		std::pair<int, int> pr = min_max(*this, 7, (cur + 1) >> 1, -1e9, 1e9).first;
+		std::pair<int, int> pr = min_max(*this, 8, (cur + 1) >> 1, -1e9, 1e9).first;
 		if(putchess(pr.first, pr.second, cur))return pr;
 		return std::make_pair(-1,-1);
 	}
