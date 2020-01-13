@@ -30,7 +30,8 @@
 #include<cstring>
 #include<unordered_map>
 #include<ctime>
-
+#include<algorithm>
+#define MAX_SEARCH 5
 #define SIZE 8
 #define NR 10
 const int nxgo[8][2]={{-1,1},{-1,0},{-1,-1},{0,1},{0,-1},{1,1},{1,0},{1,-1}};
@@ -47,6 +48,9 @@ const int terrain[10][10]={
 	{  0, 100, -50, 20, 10, 10, 20, -50, 100},
 	{  0,   0,   0,  0,  0,  0,  0,   0,   0}
 };
+bool cmp(std::pair<int, double> x, std::pair<int, double> y){
+	return x.second > y.second;
+}
 const int board_hash[10][10]={
 	{0,0,0,0,0,0,0,0,0,0},
 	{0,702167748,1149044463,376632294,336103763,1955888354,1981172283,1200258070,854575395,0},
@@ -122,8 +126,6 @@ const double trained[60][3]={
 	{44.347594,185.563423,2731.973488}
 };
 double w1=191.727187,w2=104.604102,w3=115.982689;
-
-
 struct Reversi_Board{
 	/*
 	 * 先手  1 黑棋
@@ -411,28 +413,41 @@ struct Reversi_Board{
 		if (winn != -2){
 			return std::make_pair(std::make_pair(0, 0), winn * 100000);
 		}
+		std::pair <int, int> pr[151]; //x & y
+		std::pair <int, double> pr2[151]; // id & weight
 		int cur = isMax ? 1: -1;
+		int cnt = 0;
 		double fnlWght = isMax ? -1e9 : 1e9;
 		std::pair <int, int> fnlChs = std::make_pair(-1, -1);
-		for (int i = 1; i <= 8; i++){
-			for (int j = 1; j <= 8; j++){
+		for (int i = 1; i <= 8; i++)
+			for (int j = 1; j <= 8; j++)
 				if (nowBoard.eat(0, i, j, cur) && nowBoard.board[i][j] == 0){
-					flag = true;
+					pr[++cnt] = std::make_pair(i, j);
 					Reversi_Board nxtBoard = nowBoard;
 					nxtBoard.putchess(i, j, cur);
-					double weight = min_max(nxtBoard, depth - 1, !isMax, alpha, beta).second;
-					if (isMax && weight > fnlWght){
-						fnlChs = std::make_pair(i, j);
-						fnlWght = weight;
-						alpha = weight;
-					}
-					if (!isMax && weight < fnlWght){
-						fnlChs = std::make_pair(i, j);
-						fnlWght = weight;
-						beta = weight;
-					}
-					if (beta <= alpha) break;
+					pr2[cnt] = std::make_pair(cnt, nxtBoard.assess(cur));
 				}
+		sort(pr2 + 1, pr2 + cnt + 1, cmp);
+		for (int i = 1; i <= std::min(cnt, MAX_SEARCH); i++){
+			int id = pr2[i].first;
+			int nx = pr[id].first;
+			int ny = pr[id].second;
+			if (nowBoard.eat(0, pr[id].first, pr[id].second, cur) && nowBoard.board[nx][ny] == 0){
+				flag = true;
+				Reversi_Board nxtBoard = nowBoard;
+				nxtBoard.putchess(nx, ny, cur);
+				double weight = min_max(nxtBoard, depth - 1, !isMax, alpha, beta).second;
+				if (isMax && weight > fnlWght){
+					fnlChs = std::make_pair(nx, ny);
+					fnlWght = weight;
+					alpha = weight;
+				}
+				if (!isMax && weight < fnlWght){
+					fnlChs = std::make_pair(nx, ny);
+					fnlWght = weight;
+					beta = weight;
+				}
+				if (beta <= alpha) break;
 			}
 		}
 		/*if (!flag) return std::make_pair(std::make_pair(-1, -1), min_max(nowBoard, depth - 1, !isMax, alpha, beta).second);
@@ -442,12 +457,13 @@ struct Reversi_Board{
 		return std::make_pair(fnlChs, fnlWght);	
 	}
 	std::pair<int, int> auto_putchess(int cur){
-		std::pair<int, int> pr = min_max(*this, 6, (cur + 1) >> 1, -1e9, 1e9).first;
+		std::pair<int, int> pr = min_max(*this, 7, (cur + 1) >> 1, -1e9, 1e9).first;
 		putchess(pr.first, pr.second, cur);
 		return pr;
 	}
 };
 
+#undef MAX_SEARCH
 #undef SIZE
 #undef NR
 
