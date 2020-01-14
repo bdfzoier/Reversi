@@ -26,14 +26,14 @@
 
 #include<iostream>
 #include<cstdio>
-#ifndef linux
+#ifdef _WIN32
 #include<windows.h>
 #endif
 #include<cstring>
 #include<unordered_map>
 #include<ctime>
 #include<algorithm>
-#define MAX_SEARCH 60
+#define MAX_SEARCH 11
 #define SIZE 8
 #define NR 10
 const int nxgo[8][2]={{-1,1},{-1,0},{-1,-1},{0,1},{1,-1},{1,0},{1,1},{0,-1}};
@@ -183,7 +183,7 @@ struct Reversi_Board{
 		hash1^=board_hash[5][4];
 	}
 
-#ifndef linux
+#ifdef _WIN32
 	void prt(){
 		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 96);
 		std :: cout << "    A   B   C   D   E   F   G   H   ";
@@ -225,6 +225,45 @@ struct Reversi_Board{
 			}
 		}
 		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
+	}
+#endif
+#ifndef _WIN32
+	void prt(){
+
+		printf("\033[43m");
+		printf("\033[30m");
+		printf( "    A   B   C   D   E   F   G   H   \n");
+		printf("  ┌───┬───┬───┬───┬───┬───┬───┬───┐ \n");
+		for(int i=1;i<=SIZE;i++){
+			printf("\033[30m");
+			printf("\033[43m%d ",i);
+			for(int j=1;j<=SIZE;j++){
+				printf("\033[30m");
+				printf("\033[30m│ ");
+				if(board[i][j] == 0) {
+					printf("\033[43m  ");
+				} else if(board[i][j] == 1) {
+					printf("\033[30m");
+					printf("\033[43m■ ");
+				} else {
+					printf("\033[37m");
+					printf("\033[43m■ ");
+				}
+			}
+			printf("\033[30m│ ");
+			printf("\033[40m\n");
+			if(i != SIZE) {
+				printf("\033[43m");
+				printf("\033[30m  ├───┼───┼───┼───┼───┼───┼───┼───┤ ");
+				printf("\033[40m\n");
+			} else {
+				printf("\033[43m");
+				printf("\033[30m  └───┴───┴───┴───┴───┴───┴───┴───┘ ");
+				printf("\033[40m\n");
+			}
+		}
+		printf("\033[37m");
+		printf("\033[40m");
 	}
 #endif
 	void raw_prt(){

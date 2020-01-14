@@ -9,27 +9,20 @@ char first, hq;
 Reversi_Board myboard;
 
 void cl() {
-#ifdef linux
+#ifndef _WIN32
 	system("clear");
 #endif
-
-#ifndef linux
+#ifdef _WIN32
 	system("cls");
 #endif
 }
 
 void pr() {
-
-#ifdef linux
-	myboard.raw_prt();
-#endif
-#ifndef linux
 	if(hq == 'n') {
 		myboard.raw_prt();
 	} else {
 		myboard.prt();
 	}
-#endif
 }
 
 int main(){
