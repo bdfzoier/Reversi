@@ -41,40 +41,38 @@ pair<pair<int, int>, double> min_max(Reversi_Board nowBoard, int depth, bool isM
 }
 int main(){
 	Reversi_Board myboard;
-	int x=100,y=100,z=170; 
-	//for(int i=0;i<60;i++)
-	//	myboard.w[i][0]=x,myboard.w[i][1]=y,myboard.w[i][2]=z;
-
+	//int x=100,y=100,z=170; 
+	int x=200,y=50,z=100; 
+	for(int i=0;i<60;i++)
+		myboard.w[i][0]=x,myboard.w[i][1]=y,myboard.w[i][2]=z;
+	double everage=0;
+	int cnt=0;
+	train_speed=(double)1/((double)100000);
+	for(int i=1;i<=10000;i++){
+		int cur=1;
+		double curever=0;
+		myboard.init();
+		while(myboard.win()==-2){
+			cnt++;
+			double nxpoint=min_max(myboard,2,(cur+1)>>1,-1e9,1e9).second;
+			double curpoint=myboard.assess(1);
+			curever+=(nxpoint-curpoint)/60*(nxpoint-curpoint);
+			myboard.train(curpoint,nxpoint,1);
+			std::pair<int, int> pr=min_max(myboard, 2, (cur + 1) >> 1, -1e9, 1e9).first;
+			myboard.putchess(pr.first,pr.second,cur);
+			cur=-cur;
+		}
+		cnt=0;
+		everage+=curever/(100);
+		if(i%100==0){
+			train_speed=(double)1/((double)100000*(i<5000?sqrt(i):i));
+			puts("---");
 			for(int i=0;i<60;i++)
 				printf("%f %f %f\n",myboard.w[i][0],myboard.w[i][1],myboard.w[i][2]);
-//	double everage=0;
-//	int okcnt=0;
-//	int cnt=0;
-//	train_speed=(double)1/((double)100000);
-//	for(int i=1;i<=10000;i++){
-//		int cur=1;
-//		myboard.init();
-//		while(myboard.win()==-2){
-//			cnt++;
-//			double nxpoint=min_max(myboard,2,(cur+1)>>1,-1e9,1e9).second;
-//			double curpoint=myboard.assess(1);
-//			everage+=abs(nxpoint-curpoint);
-//			myboard.train(curpoint,nxpoint,1);
-//
-//			//myboard.raw_prt();
-//			myboard.rand_putchess(cur);
-//			cur=-cur;
-//		}
-//		if(i%100==0){
-//			train_speed=(double)1/((double)100000*(i<5000?sqrt(i):i));
-//			puts("---");
-//			for(int i=0;i<60;i++)
-//				printf("%f %f %f\n",myboard.w[i][0],myboard.w[i][1],myboard.w[i][2]);
-//			puts("---");
-//			printf("%d ",i);std::cout<<everage<<std::endl;
-//			everage=0;
-//			cnt=0;
-//		}
-//	}
+			puts("---");
+			printf("%d ",i);std::cout<<everage<<std::endl;
+			everage=0;
+		}
+	}
 	return 0;
 }
