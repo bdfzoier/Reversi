@@ -1,17 +1,19 @@
 ![](https://i.loli.net/2020/01/09/elHK2zmAindw3ZX.jpg)
 # Reversi
-基于minmax搜索实现的黑白棋AI，支持linux，windows下编译运行
+基于minmax搜索实现的黑白棋AI，支持linux，windows下编译运行，需要对c++11的支持
 
 ## 战斗力
 打赢了目前找到的所有AI，具体[战况](https://github.com/bdfzoier/Reversi/blob/master/战况.md)（该战况已过期，已经打败了更多ai（10余个））。
 
 ## 如何使用
 
-### 傻瓜式开启方式（取决于网速，可能较慢）
+### 傻瓜式开启方式1（推荐）
+点此[链接](https://github.com/bdfzoier/Reversi/releases/tag/v1.0)下载`reversi_ai.exe`并直接运行
+### 傻瓜式开启方式2（取决于网速，可能较慢）
 ```
 $ git clone https://github.com/bdfzoier/Reversi.git
 $ cd Reversi/
-$ g++ reversi_ai.cpp -o reversi_ai -Wall
+$ g++ reversi_ai.cpp -o reversi_ai -Wall -std=c++11
 $ ./reversi_ai
 ```
 
