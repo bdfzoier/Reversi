@@ -55,6 +55,12 @@ int main(){
 	//输出棋盘
 	myboard.prt();
 
+	//自动下
+	myboard.auto_putchess(-1);
+	
+	//输出棋盘
+	myboard.prt();
+
 	//没有图形的输出
 	myboard.raw_prt();
 

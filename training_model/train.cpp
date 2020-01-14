@@ -39,16 +39,17 @@ pair<pair<int, int>, double> min_max(Reversi_Board nowBoard, int depth, bool isM
 	if (!flag) return make_pair(make_pair(-1, -1), min_max(nowBoard, depth - 1, !isMax, alpha, beta).second);
 	return make_pair(fnlChs, fnlWght);
 }
+unordered_map<long long,bool> endboard;
 int main(){
 	Reversi_Board myboard;
 	//int x=100,y=100,z=170; 
-	int x=200,y=50,z=100; 
+	int x=200,y=50,z=300; 
 	for(int i=0;i<60;i++)
 		myboard.w[i][0]=x,myboard.w[i][1]=y,myboard.w[i][2]=z;
 	double everage=0;
-	int cnt=0;
+	int cnt=0,endcnt=0;
 	train_speed=(double)1/((double)100000);
-	for(int i=1;i<=10000;i++){
+	for(int i=1;i<=50000;i++){
 		int cur=1;
 		double curever=0;
 		myboard.init();
@@ -58,19 +59,27 @@ int main(){
 			double curpoint=myboard.assess(1);
 			curever+=(nxpoint-curpoint)/60*(nxpoint-curpoint);
 			myboard.train(curpoint,nxpoint,1);
-			std::pair<int, int> pr=min_max(myboard, 2, (cur + 1) >> 1, -1e9, 1e9).first;
-			myboard.putchess(pr.first,pr.second,cur);
+			if(cur==1){
+				std::pair<int, int> pr=min_max(myboard, 2, (cur + 1) >> 1, -1e9, 1e9).first;
+				myboard.putchess(pr.first,pr.second,cur);
+			}
+			else myboard.rand_putchess(cur);
 			cur=-cur;
+		}
+		if(!endboard[myboard.curhash()]){
+			endboard[myboard.curhash()]=1;
+			endcnt++;
 		}
 		cnt=0;
 		everage+=curever/(100);
 		if(i%100==0){
-			train_speed=(double)1/((double)100000*(i<5000?sqrt(i):i));
+			train_speed=(double)1/((double)100000*(i<10000?1:(i<20000?sqrt(i):i)));
 			puts("---");
 			for(int i=0;i<60;i++)
 				printf("%f %f %f\n",myboard.w[i][0],myboard.w[i][1],myboard.w[i][2]);
 			puts("---");
 			printf("%d ",i);std::cout<<everage<<std::endl;
+			printf("endings: %d\n",endcnt);
 			everage=0;
 		}
 	}
