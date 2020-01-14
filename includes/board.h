@@ -230,10 +230,11 @@ struct Reversi_Board{
 #ifndef _WIN32
 	void prt(){
 
-		printf("\033[43m");
 		printf("\033[30m");
-		printf( "    A   B   C   D   E   F   G   H   \n");
-		printf("  ┌───┬───┬───┬───┬───┬───┬───┬───┐ \n");
+		printf("\033[43m    A   B   C   D   E   F   G   H   ");
+		printf("\033[40m\n");
+		printf("\033[43m  ┌───┬───┬───┬───┬───┬───┬───┬───┐ ");
+		printf("\033[40m\n");
 		for(int i=1;i<=SIZE;i++){
 			printf("\033[30m");
 			printf("\033[43m%d ",i);
