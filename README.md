@@ -7,12 +7,25 @@
 
 ## 如何使用
 
+### 傻瓜式开启方式（取决于网速，可能较慢）
 ```
 $ git clone https://github.com/bdfzoier/Reversi.git
 $ cd Reversi/
 $ g++ reversi_ai.cpp -o reversi_ai -Wall
 $ ./reversi_ai
 ```
+
+### 睿智式开启方式1
+
+手动将`/includes/board.h`和`/reversi_ai.cpp`复制到本地并放在同一文件夹，将`/reversi_ai.cpp`第三行的:
+```cpp
+# include "./includes/board.h" 
+```
+手动改成
+```cpp
+# include "board.h" 
+```
+并编译运行`reversi_ai.cpp`即可。
 
 ## 程序框架
 
