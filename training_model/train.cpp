@@ -1,7 +1,7 @@
 #include <iostream>
 #include <cmath>
 #include <cstdio>
-#include "../includes/board_hash.h"
+#include "../includes/board.h"
 using namespace std;
 pair<pair<int, int>, double> min_max(Reversi_Board nowBoard, int depth, bool isMax, double alpha, double beta){ //返回一个坐标 和 最大/最小权值
 	bool flag = false;
