@@ -33,7 +33,7 @@
 #include<unordered_map>
 #include<ctime>
 #include<algorithm>
-#define MAX_SEARCH 11
+#define MAX_SEARCH 12
 #define SIZE 8
 #define NR 10
 const int nxgo[8][2]={{-1,1},{-1,0},{-1,-1},{0,1},{1,-1},{1,0},{1,1},{0,-1}};
@@ -130,7 +130,6 @@ const double trained[60][3]={
 	{29.889959,584.274759,2175.681438},
 	{13.191873,-344.460105,2185.081120}
 };
-double w1=191.727187,w2=104.604102,w3=115.982689;
 struct Reversi_Board{
 	/*
 	 * 先手  1 黑棋
@@ -409,9 +408,6 @@ struct Reversi_Board{
 			else if(iswin==-cur)ans=-100000;
 			else ans=0;
 		}
-		/*return w1*(terr(cur)-terr(-cur))+
-			w2*(choice(cur)-choice(-cur))+
-			w3*(not_threated(cur)-not_threated(-cur));*/
 		else ans=w[step][0]*(terr(cur)-terr(-cur))+
 			w[step][1]*(choice(cur)-choice(-cur))+
 			w[step][2]*(not_threated(cur)-not_threated(-cur));
@@ -422,9 +418,6 @@ struct Reversi_Board{
 		w[step][0]+=train_speed*(terr(cur)-terr(-cur))*(t-o);
 		w[step][1]+=train_speed*(choice(cur)-choice(-cur))*(t-o);
 		w[step][2]+=train_speed*(not_threated(cur)-not_threated(-cur))*(t-o);
-		//w1+=train_speed*(terr(cur)-terr(-cur))*(t-o);
-		//w2+=train_speed*(choice(cur)-choice(-cur))*(t-o);
-		//w3+=train_speed*(not_threated(cur)-not_threated(-cur))*(t-o);
 	}
 
 
