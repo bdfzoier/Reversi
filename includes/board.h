@@ -497,9 +497,7 @@ struct Reversi_Board{
 			}
 			if (beta <= alpha) break;
 		}
-		/*if (!flag) return std::make_pair(std::make_pair(-1, -1), min_max(nowBoard, depth - 1, !isMax, alpha, beta).second);
-		return std::make_pair(fnlChs, fnlWght);*/
-		if (!flag) fnlWght=min_max(nowBoard, depth - 1, !isMax, alpha, beta).second;
+		if (!flag) fnlWght=min_max(nowBoard, depth, !isMax, alpha, beta).second;
 		nowBoard.save_w(depth, fnlWght);
 		return std::make_pair(fnlChs, fnlWght);	
 	}
