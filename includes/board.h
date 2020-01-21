@@ -130,6 +130,7 @@ const double trained[60][3]={
 	{29.889959,584.274759,2175.681438},
 	{13.191873,-344.460105,2185.081120}
 };
+int search_t;
 struct Reversi_Board{
 	/*
 	 * 先手  1 黑棋
@@ -454,6 +455,7 @@ struct Reversi_Board{
 			}
 	}
 	std::pair<std::pair<int, int>, double> min_max(Reversi_Board nowBoard, int depth, bool isMax, double alpha, double beta){ //返回一个坐标 和 最大/最小权值
+		search_t--;
 		bool flag = false;
 		if (depth == 0){
 			return std::make_pair(std::make_pair(-1, -1), nowBoard.assess(1));
@@ -482,6 +484,7 @@ struct Reversi_Board{
 			int nx = pr[id].first;
 			int ny = pr[id].second;
 			flag = true;
+			if(search_t==0)return std::make_pair(std::make_pair(-1,-1), isMax ? -1e9 : 1e9);
 			Reversi_Board nxtBoard = nowBoard;
 			nxtBoard.putchess(nx, ny, cur);
 			double weight = min_max(nxtBoard, depth - 1, !isMax, alpha, beta).second;
@@ -497,14 +500,33 @@ struct Reversi_Board{
 			}
 			if (beta <= alpha) break;
 		}
-		if (!flag) fnlWght=min_max(nowBoard, depth, !isMax, alpha, beta).second;
+		if (!flag){
+			if(search_t==0)return std::make_pair(std::make_pair(-1,-1), isMax ? -1e9 : 1e9);
+			fnlWght=min_max(nowBoard, depth, !isMax, alpha, beta).second;
+		}
 		nowBoard.save_w(depth, fnlWght);
 		return std::make_pair(fnlChs, fnlWght);	
 	}
 	std::pair<int, int> auto_putchess(int cur){
+		double best=(cur==1?-1e9:1e9);
+		int search_depth=(step>=49?6:5);
 		std::pair<int, int> pr;
-		if(step>=49)pr=min_max(*this, 6, (cur + 1) >> 1, -1e9, 1e9).first;
-		else pr=min_max(*this, 5, (cur + 1) >> 1, -1e9, 1e9).first;
+		search_t=1000000;
+		pr=min_max(*this, search_depth, (cur + 1) >> 1, -1e9, 1e9).first;
+		search_depth++;
+		search_t-=1000000;
+		while(search_t>0){
+			std::pair<std::pair<int, int>, double> curres=min_max(*this, search_depth, (cur + 1) >> 1, -1e9, 1e9);
+			if(cur==1 && curres.second>best){
+				best=curres.second;
+				pr=curres.first;
+			}
+			if(cur==-1 && curres.second<best){
+				best=curres.second;
+				pr=curres.first;
+			}
+			search_depth++;
+		}
 		putchess(pr.first, pr.second, cur);
 		return pr;
 	}
