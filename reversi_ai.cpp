@@ -39,7 +39,7 @@ int main(){
 		printf("Current player's valid moves are: ");
 		for(int j = 1 ; j <= 8 ; j ++) 
 			for(int i = 1 ; i <= 8 ; i ++) 
-				if(myboard.eat(0, i, j, cur) && myboard.board[i][j] == 0) 
+				if(myboard.eat(0, i, j, first == 'y' ? 1 : -1) && myboard.board[i][j] == 0) 
 					printf("[%c%d] ", char(j + 'A' - 1), i);
 		printf("\n");
 		printf("Please enter the the new piece's coordinate\n");
